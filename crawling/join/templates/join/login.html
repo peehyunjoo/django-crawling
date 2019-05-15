@@ -12,7 +12,7 @@
          .btn{
             background-color:#f8bbd0;
             border-color:#f8bbd0;
-            color:white;
+            color:white
          }
          .btn:hover{
             background-color:#f8bbd0;
@@ -27,38 +27,25 @@
 </nav>
     <div class="container" style="margin-top:1.5em">
         <div class="row">
-        <form class="col align-self-center" action="signup/" method="post">         <!--action에 끝에 꼭 / 이것을 넣어주어야됨 그렇지 않으면 get방식으로 넘어감. ex)signup x , signup/ -->
+        <form class="col align-self-center" action="/join/login_success/" method="post">         <!--action에 끝에 꼭 / 이것을 넣어주어야됨 그렇지 않으면 get방식으로 넘어감. ex)signup x , signup/ -->
             {% csrf_token %}    <!--form으로 넘기기 위해선 csrf_token을 넣어야 가능-->
           <div class="form-row">
             <div class="form-group col-md-4 offset-md-4">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+              <label for="email">ID</label>
+              <input type="text" class="form-control" name="id" id="id" placeholder="id">
             </div>
           </div>
-            <div class="form-row">
+          <div class="form-row">
             <div class="form-group col-md-4 offset-md-4">
-              <label for="id">ID</label>
-              <input type="text" class="form-control" name="id" id="id" placeholder="ID">
+              <label for="id">PASSWORD</label>
+              <input type="password" class="form-control" name="password" id="password" placeholder="password">
             </div>
           </div>
-            <div class="form-row">
-            <div class="form-group col-md-4 offset-md-4">
-              <label for="nickname">NICKNAME</label>
-              <input type="text" class="form-control" name="nickname" id="nickname" placeholder="NICKNAME">
-            </div>
-          </div>
-            <div class="form-row">
-            <div class="form-group col-md-4 offset-md-4">
-              <label for="password">PASSWORD</label>
-              <input type="password" class="form-control" name="password" id="password" placeholder="PASSWORD">
-            </div>
-          </div>
-            <div class="form-row">
+          <div class="form-row">
             <div class="form-group col-md-4 offset-md-4">
              <button type="submit" class="btn btn-lg btn-block">Sign in</button>
             </div>
           </div>
-
         </form>
         </div>
     </div>
