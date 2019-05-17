@@ -10,7 +10,7 @@ import requests
 
 
 def index(request):
-    if request.session:
+    if request.session.get('member_id',False):
         return render(request, 'join/main.html')
     else:
         return render(request, 'join/index.html')
@@ -64,31 +64,41 @@ def logout(request):
         pass
 
 def crawling(request):
-    response= requests.get('http://ticket.interpark.com/TPGoodsList.asp?Ca=Liv&SubCa=Bal&tid4=Bal')
-    html = response.text
-    soup = BeautifulSoup(html,"html.parser")
+    param = request.GET.get('kind')
+    print(param)
+    if param == 'concert':
+        url = 'http://ticket.interpark.com/TPGoodsList.asp?Ca=Liv'
+    elif param == 'musical':
+        url = 'http://ticket.interpark.com/TPGoodsList.asp?Ca=Mus'
 
-    content = soup.find("div",{"class":"stit"})
-    content_info = content.find_all("td",{"class":"RKthumb"})
+    print(url)
+    if request.session.get('member_id',False):
+        response= requests.get(url)
+        html = response.text
+        soup = BeautifulSoup(html,"html.parser")
 
-    list = []
-    data = dict()
-    for alt in content_info:
+        content = soup.find("div",{"class":"stit"})
+        content_info = content.find_all("td",{"class":"RKthumb"})
 
-        content_img = alt.find('img')
-        content_alt  = content_img['alt']
+        list = []
+        data = dict()
+        for alt in content_info:
 
-        list.append(content_alt)
+            content_img = alt.find('img')
+            content_alt  = content_img['alt']
 
-        #print(content_alt)
-        #print(content_info)
+            list.append(content_alt)
 
-    print(list)
+            #print(content_alt)
+            #print(content_info)
 
-    data['title']= list        #list에 담은 데이터를 key, value형식의 dictionary에 다시 담기
-    print(data['title'][1])
+        print(list)
 
-   # return render(request, 'join/crawling.html',{ 'content' : list})
-    return render(request, 'join/crawling.html', {'content': data})
+        data['title']= list        #list에 담은 데이터를 key, value형식의 dictionary에 다시 담기
+        print(data['title'][1])
 
+       # return render(request, 'join/crawling.html',{ 'content' : list})
+        return render(request, 'join/crawling.html', {'content': data})
+    else:
+        return HttpResponseRedirect("/join/login/")
 
