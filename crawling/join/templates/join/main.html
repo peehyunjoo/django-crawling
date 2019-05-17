@@ -32,7 +32,11 @@
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">TICKET CRAWLING</a>
     {% if request.session.member_id %}
-        <a href="/join/logout/">{{ request.session.member_id }}님<i class="fas fa-sign-out-alt"></i></a>
+    <div>
+        <a href="/join/logout/">{{ request.session.member_id }}님&nbsp;<i class="fas fa-sign-out-alt"></i></a>
+        <br>
+        <a href="/join/my_crawling">추가<i class="fas fa-plus fa-2x"></i></a>
+        </div>
     {% else %}
         <a href="/join/login/">LogIn&nbsp;<i class="fas fa-sign-in-alt"></i></a>
     {% endif %}

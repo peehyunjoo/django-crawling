@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import JoinForm  #forms.py 의 JoinForm
+from .forms import JoinForm,ChoiceForm #forms.py 의 JoinForm,ChoiceForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -41,8 +41,10 @@ def login(request):
 
 def login_success(request):
      join_list = join.objects.filter(id=request.POST['id'], password=request.POST['password']).values()
+     print("리스트", join_list)
      join_id = join_list.values_list('id',flat =True)
      join_id = list(join_id)
+     #join_id = join.objects.filter(id=request.POST['id'], password=request.POST['password'])
      print(join_id)
 
      if join_list.exists():
@@ -71,7 +73,6 @@ def crawling(request):
     elif param == 'musical':
         url = 'http://ticket.interpark.com/TPGoodsList.asp?Ca=Mus'
 
-    print(url)
     if request.session.get('member_id',False):
         response= requests.get(url)
         html = response.text
@@ -101,4 +102,27 @@ def crawling(request):
         return render(request, 'join/crawling.html', {'content': data})
     else:
         return HttpResponseRedirect("/join/login/")
+
+def my_crawling(request):
+    return render(request, 'join/my_crawling.html')
+
+def my_crawling_success(request):
+
+    data = {}
+    data['id'] = request.session.get('member_id',False)
+    data['etc1'] = request.POST['etc1']
+    data['etc2'] = request.POST['etc2']
+
+    if request.method == "POST":
+        form = ChoiceForm(data)
+        print(form)
+        if form.is_valid():
+            choice = form.save(commit=False)
+            choice.save()  # 디비에 저장
+            return HttpResponse('<h1>Register Success</h1>')
+
+    elif request.method == "GET":
+        return HttpResponse('<h1>GET</h1>')
+    else:
+        return HttpResponse('<h1>NOTHING</h1>')
 

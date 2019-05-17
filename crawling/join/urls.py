@@ -9,4 +9,6 @@ urlpatterns = [
     path('login_success/', views.login_success),
     path('logout/', views.logout),
     path('crawling/', views.crawling),
+    path('my_crawling/', views.my_crawling),
+    path('my_crawling_success/', views.my_crawling_success),
 ]
