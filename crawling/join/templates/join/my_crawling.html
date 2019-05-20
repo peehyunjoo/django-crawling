@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <title>Ticket Crawling</title>
 {% load bootstrap4 %}
 {% bootstrap_css %}
@@ -18,27 +20,54 @@
             background-color:#f8bbd0;
             border-color:#c48b9f;
             }
+         a{
+            color:black;
+         }
+         a:hover{
+            color:black;
+         }
     </style>
 </head>
 <body>
-
+{% if content %}
+    <script>
+    $(document).ready(function(){
+        $('button').text('Update');
+     });
+    </script>
+{% endif %}
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">My CRAWLING</a>
+    {% if request.session.member_id %}
+    <div>
+        <a href="/join/logout/">{{ request.session.member_id }}님&nbsp;<i class="fas fa-sign-out-alt"></i></a>
+    </div>
+    {% else %}
+        <a href="/join/login/">LogIn&nbsp;<i class="fas fa-sign-in-alt"></i></a>
+    {% endif %}
 </nav>
     <div class="container" style="margin-top:1.5em">
         <div class="row">
-        <form class="col align-self-center" action="/join/my_crawling_success/" method="post">         <!--action에 끝에 꼭 / 이것을 넣어주어야됨 그렇지 않으면 get방식으로 넘어감. ex)signup x , signup/ -->
+        {% if content %}
+            {% with action="/join/my_crawling_update/" %}
+                <form class="col align-self-center" action="{{ action }}" method="post">         <!--action에 끝에 꼭 / 이것을 넣어주어야됨 그렇지 않으면 get방식으로 넘어감. ex)signup x , signup/ -->
+            {% endwith %}
+        {% else %}
+             {% with action="/join/my_crawling_success/" %}
+                    <form class="col align-self-center" action="{{ action }}" method="post">
+             {% endwith %}
+        {% endif %}
             {% csrf_token %}    <!--form으로 넘기기 위해선 csrf_token을 넣어야 가능-->
           <div class="form-row">
             <div class="form-group col-md-4 offset-md-4">
               <label for="concert">CONCERT SEARCH</label>
-              <input type="text" class="form-control" name="etc1" id="etc1" placeholder="CONCERT SEARCH">
+              <input type="text" class="form-control" name="etc1" id="etc1" value= "{{ content.0.etc1 }}" placeholder="CONCERT SEARCH">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4 offset-md-4">
               <label for="musical">MUSICAL SERARCH</label>
-              <input type="text" class="form-control" name="etc2" id="etc2" placeholder="MUSICAL SERARCH">
+              <input type="text" class="form-control" name="etc2" id="etc2" value = "{{ content.0.etc2 }}" placeholder="MUSICAL SERARCH">
             </div>
           </div>
           <div class="form-row">
@@ -49,5 +78,12 @@
         </form>
         </div>
     </div>
+<!--{% if content %}
+    {% for data in content %}
+        {{ data.etc1 }}
+    {% endfor %}
+{% endif %}
+-->
+
 </body>
 </html>

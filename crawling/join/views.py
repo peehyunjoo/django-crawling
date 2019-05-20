@@ -3,7 +3,7 @@ from .forms import JoinForm,ChoiceForm #forms.py 의 JoinForm,ChoiceForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import join      #DB select를 위해 models를 가져옴
+from .models import join,choice      #DB select를 위해 models를 가져옴
 from bs4 import BeautifulSoup
 import requests
 
@@ -104,7 +104,15 @@ def crawling(request):
         return HttpResponseRedirect("/join/login/")
 
 def my_crawling(request):
-    return render(request, 'join/my_crawling.html')
+
+    #choice_list = choice.objects.values()
+    choice_list = choice.objects.filter(id = request.session['member_id']).values()
+    print(choice_list)
+    context = {
+        'content' : choice_list
+    }
+    print(context)
+    return render(request, 'join/my_crawling.html',context)
 
 def my_crawling_success(request):
 
@@ -126,3 +134,7 @@ def my_crawling_success(request):
     else:
         return HttpResponse('<h1>NOTHING</h1>')
 
+def update(request):
+    choice.objects.filter(id=request.session['member_id']).update(etc1=request.POST.get('etc1'), etc2=request.POST.get('etc2'))
+
+    return HttpResponseRedirect("/join/my_crawling/")
