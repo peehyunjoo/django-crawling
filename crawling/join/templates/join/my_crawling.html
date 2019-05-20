@@ -26,6 +26,9 @@
          a:hover{
             color:black;
          }
+         b{
+            color:deeppink;
+         }
     </style>
 </head>
 <body>
@@ -75,6 +78,15 @@
              <button type="submit" class="btn btn-lg btn-block">Register</button>
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-group col-md-4 offset-md-4" style="text-align:center;">
+                {% if messages %}
+                    {% for message in messages %}
+                        <b{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</b>
+                    {% endfor %}
+                {% endif %}
+            </div>
+          </div>
         </form>
         </div>
     </div>
@@ -84,6 +96,7 @@
     {% endfor %}
 {% endif %}
 -->
+
 
 </body>
 </html>

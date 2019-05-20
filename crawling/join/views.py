@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from .models import join,choice      #DB select를 위해 models를 가져옴
 from bs4 import BeautifulSoup
 import requests
+from django.contrib import messages
 
 
 
@@ -136,5 +137,7 @@ def my_crawling_success(request):
 
 def update(request):
     choice.objects.filter(id=request.session['member_id']).update(etc1=request.POST.get('etc1'), etc2=request.POST.get('etc2'))
+    messages.success(request, "Update Success")
 
     return HttpResponseRedirect("/join/my_crawling/")
+    #return render(request, 'join/my_crawling.html')
