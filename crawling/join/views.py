@@ -38,7 +38,10 @@ def signup(request):
         return HttpResponse('<h1>NOTHING</h1>')
 
 def login(request):
-    return render(request, 'join/login.html')
+    if request.session.get('member_id', False):
+        return render(request, 'join/main.html')
+    else:
+        return render(request, 'join/login.html')
 
 def login_success(request):
      join_list = join.objects.filter(id=request.POST['id'], password=request.POST['password']).values()
