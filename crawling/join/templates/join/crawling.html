@@ -6,81 +6,84 @@
     <meta charset="UTF-8">
     <title>Ticket Crawling</title>
     <script>
-    window.onload = function(){
-        var param = $(location).attr('search');
-        var arr = param.split("=");
-        if(arr[1] == "musical"){
-            $(".nav-link").eq(1).attr("class","nav-link active");
-            $(".nav-link").not(':eq(1)').attr("class","nav-link");
+        window.onload = function(){
+            var param = $(location).attr('search');
+            var arr = param.split("=");
+            if(arr[1] == "musical"){
+                $(".nav-link").eq(1).attr("class","nav-link active");
+                $(".nav-link").not(':eq(1)').attr("class","nav-link");
+            }
         }
-    }
     </script>
 
-{% load bootstrap4 %}
-{% bootstrap_css %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
     <style>
         .bg-light{
             background-color:#ffebee!important
-            }
-         .btn{
+        }
+        .btn{
             background-color:#f8bbd0;
             border-color:#f8bbd0;
             color:white
-         }
-         .btn:hover{
+        }
+        .btn:hover{
             background-color:#f8bbd0;
             border-color:#c48b9f;
-          }
-         a{
+        }
+        a{
             color:black;
-         }
-         a:hover{
+        }
+        a:hover{
             color:black;
-         }
-         .table td, table.th, .table th{
+        }
+        .table td, table.th, .table th{
             border-top:1px solid #ffebee;
-         }
-         .table thead th{
-          border-bottom:2px solid #ffebee;
-         }
+        }
+        .table thead th{
+            border-bottom:2px solid #ffebee;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="#">TICKET CRAWLING</a>
-      <a href="/join/logout/">{{ request.session.member_id }}님<i class="fas fa-sign-out-alt"></i></a>
-    </nav>
-    <div class="container" style="margin-top:3.5em">
-        <div class="row">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">TICKET CRAWLING</a>
+    <a href="/join/logout/">{{ request.session.member_id }}님<i class="fas fa-sign-out-alt"></i></a>
+</nav>
+<div class="container" style="margin-top:3.5em">
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
                 <a class="nav-link active" href="/join/crawling/?kind=concert">콘서트 전체</a>
-              </li>
-              <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/join/crawling/?kind=musical">뮤지컬 전체</a>
-              </li>
-              <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="">나의 콘서트</a>
-              </li>
-            </ul>
-        </div>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">공연 및 콘서트 제목</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for value in content.title %}
-                <tr>
-                    <td>{{ value }}</td>
-                </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-            <!--{{ content.title }}
-            {{ content.title.0 }}-->
+            </li>
+        </ul>
     </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">공연 및 콘서트 제목</th>
+            <th scope="col">공연장소</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for value in content %}
+            <tr>
+                <td>{{ value.title }}</td>
+                <td>{{ value.place }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <!--{{ content.title }}
+    {{ content.title.0 }}-->
+</div>
 </body>
 </html>

@@ -82,28 +82,38 @@ def crawling(request):
         html = response.text
         soup = BeautifulSoup(html,"html.parser")
 
-        content = soup.find("div",{"class":"stit"})
-        content_info = content.find_all("td",{"class":"RKthumb"})
+        data = dict()
+
+        content = soup.find("div", {"class": "stit"})
+        content_info = content.find_all("td", {"class": "RKthumb"})
+        content_place  = content.select(".Rkdate > a")
 
         list = []
-        data = dict()
+        list2 = []
+        total_list = []      #전체 딕셔너리를 합칠 리스트
+
         for alt in content_info:
-
+            item = dict()
             content_img = alt.find('img')
-            content_alt  = content_img['alt']
+            content_alt = content_img['alt']
 
+            item["title"] = content_alt
             list.append(content_alt)
+        for place in content_place:
+            item = dict()
 
-            #print(content_alt)
-            #print(content_info)
+            item["place"] = place.text
+            list2.append(place.text)
 
-        print(list)
+        for i in range(len(list)):      #리스트 개수만큼 for문 돌려 다시 재배열 하기
+            item = dict()
+            item["title"] = list[i]
+            item["place"] = list2[i]
 
-        data['title']= list        #list에 담은 데이터를 key, value형식의 dictionary에 다시 담기
-        print(data['title'][1])
-
-       # return render(request, 'join/crawling.html',{ 'content' : list})
-        return render(request, 'join/crawling.html', {'content': data})
+            total_list.append(item)
+        print(total_list)
+        #return render(request, 'join/crawling.html',{ 'content' : list})
+        return render(request, 'join/crawling.html', {'content': total_list})
     else:
         return HttpResponseRedirect("/join/login/")
 
